@@ -12,6 +12,7 @@ import CreatePost from './pages/CreatePost'
 import PrivateRoute from './components/PrivateRoute'
 import PostShow from './pages/PostShow'
 import UpdatePost from './pages/UpdatePost'
+import ChatSection from './pages/ChatSection'
 export default function App() {
   return (
     <div>
@@ -29,6 +30,7 @@ export default function App() {
           <Route path='/post/update/:PostId' element={<UpdatePost/>}></Route>
           <Route element={<PrivateRoute />}>
             <Route path='/profile' element={<Profile />}></Route>
+            <Route path='/chat/inbox' element={<ChatSection />}></Route>
           </Route>
           <Route path='/create-post' element={<CreatePost />}></Route>
         </Routes>

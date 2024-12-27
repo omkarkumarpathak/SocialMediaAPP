@@ -9,13 +9,14 @@ import {app} from '../../firebase.js'
 function Profile() {
 
   const [edit, setEdit] = useState(true);
+
   const [ProfileData, setProfileData] = useState({});
   const [updateMessage, setUpdateMessage] = useState(null);
+
   const [Posts, setPosts] = useState([]);
+
   const [profileImage, setProfileImage]=useState(null);
   const [profileImageURL, setProfileImageURL]=useState(null);
-
-  
   const [ProfileImageMessage, setProfileImageMessage]=useState(null);
   const [ProfileImageError, setProfileImageError]=useState(null);
 
@@ -85,7 +86,6 @@ function Profile() {
       dispatch(deleteUserStart());
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
         method: 'DELETE',
-
       })
 
       const data = await res.json();

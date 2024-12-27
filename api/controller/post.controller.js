@@ -44,16 +44,10 @@ export const getPosts=async(req,res)=>{
 
 export const deletePost=async(req,res)=>{
 
-    console.log(req.user.id);
-    console.log(req.params.PostCreatorId);
-    
     if(req.user.id!=req.params.PostCreatorId){
         return res.status(401).json({message:"You are not owner of this post"});
     }
-
-    console.log(req.user.id);
-    console.log(req.params.PostCreatorId);
-
+    
     try {
         const response= await Post.findByIdAndDelete(req.params.PostId);
         res.status(200).json({response});

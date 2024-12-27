@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage';
-import {app} from '../../firebase.js'
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import { app } from '../../firebase.js'
 
 
 
@@ -9,8 +9,8 @@ function CreatePost() {
 
     const [formData, setFormData] = useState({});
     const [message, setMessage] = useState(null);
-    const [uploadImageMessage,setUploadImageMessage]=useState(null);
-    const [uploadImageProgress,setUploadImageProgress]=useState(null);
+    const [uploadImageMessage, setUploadImageMessage] = useState(null);
+    const [uploadImageProgress, setUploadImageProgress] = useState(null);
     const [imageFile, setImageFile] = useState(null);
 
     const navigate = useNavigate();
@@ -19,35 +19,35 @@ function CreatePost() {
     }
     console.log(formData);
 
-    const handleImageUpload=async(e)=>{
+    const handleImageUpload = async (e) => {
         e.preventDefault();
 
         try {
-            if(!imageFile){
+            if (!imageFile) {
                 setUploadImageMessage('Upload Image first');
                 return;
             }
-            const fileName=new Date().getTime()+'-'+imageFile.name;
-            const storage=getStorage(app);
-            const storageRef=ref(storage,fileName);
-            const uploadTask=uploadBytesResumable(storageRef,imageFile);
+            const fileName = new Date().getTime() + '-' + imageFile.name;
+            const storage = getStorage(app);
+            const storageRef = ref(storage, fileName);
+            const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
             uploadTask.on(
                 'state_changed',
-                (snapshot)=>{
-                    const progress=(snapshot.bytesTransferred/snapshot.totalBytes)*100;
-                    setUploadImageProgress(progress.toFixed(0)+'%');
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    setUploadImageProgress(progress.toFixed(0) + '%');
                     console.log(progress.toFixed(0))
                 },
-                (error)=>{
+                (error) => {
                     setUploadImageMessage('Image Uploading failed');
                     setUploadImageProgress(null);
                 },
-                ()=>{
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         setUploadImageMessage(null);
                         setUploadImageProgress(null);
-                        setFormData({...formData,image:downloadURL});
+                        setFormData({ ...formData, image: downloadURL });
                     })
                 }
             )
@@ -97,15 +97,16 @@ function CreatePost() {
                     <div className='w-full flex flex-col mt-3'>
                         <label name='title'>Title of Post</label>
                         <input onChange={onChange} className='flex-1 p-1' type="text" id='title' />
-
                     </div>
 
                     <div className='w-full flex flex-col  mt-3'>
                         <label name='content'>Content</label>
                         <textarea onChange={onChange} className='flex-1 p-1' type="text" id='content' />
                     </div>
+
                     <div className=' mt-3'>
-                    <label name='image'>Image</label>
+                        
+                        <label name='image'>Image</label>
                         <div className='flex w-full '>
                             <input className='mt-2' type="file" accept='image' id='image'
                                 onChange={(e) => setImageFile(e.target.files[0])} />
@@ -114,17 +115,9 @@ function CreatePost() {
 
                     </div>
 
-                    
-                    {
-                        message && (
-                            <span>{message}</span>
-                        )
-                    }
-                     {
-                        uploadImageMessage && (
-                            <span>{uploadImageMessage}</span>
-                        )
-                    }
+                    { message && ( <span>{message}</span> )  }
+
+                    { uploadImageMessage && ( <span>{uploadImageMessage}</span>)}
 
                     <button onClick={HandleSubmit} type='submit' className='bg-red-800 text-white p-2 mt-9'>Submit</button>
                 </form>

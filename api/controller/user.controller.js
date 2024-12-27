@@ -3,7 +3,7 @@ import bcryptjs from 'bcryptjs';
 
 export const updateUser = async (req, res) => {
     try {
-
+        
         const userId = req.params.userId;
 
         if (req.body.password) {
@@ -59,3 +59,13 @@ export const getUser=async(req,res)=>{
         res.status(505).json({"message":"Internal server error"});
     }
 }
+
+export const allUsers=async(req,res)=>{
+    try {
+        const users=await User.find({});
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+

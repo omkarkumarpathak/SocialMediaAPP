@@ -4,9 +4,9 @@ import { Link, useLocation } from 'react-router-dom';
 
 
 function Header() {
-    
-    const path=useLocation().pathname;
-    const {currentUser} =useSelector((state)=>state.user);
+
+    const path = useLocation().pathname;
+    const { currentUser } = useSelector((state) => state.user);
 
     return (
         <header className='w-full bg-blue-300 flex justify-center h-14 items-center'>
@@ -14,17 +14,20 @@ function Header() {
                 <Link to='/'>Logo</Link>
                 <div className='flex w-[50%] justify-between'>
                     <div className='flex space-x-9'>
-                        <Link to='/' className={path=='/'?'underline':''}><span>Home</span></Link>
-                        <Link to='/blog' className={path=='/blog'?'underline':''}><span>Blog</span></Link>
-                        <Link to='/courses' className={path=='/courses'?'underline':''}><span>Courses</span></Link>
+                        <Link to='/' className={path == '/' ? 'underline' : ''}><span>Home</span></Link>
+                        <Link to='/blog' className={path == '/blog' ? 'underline' : ''}><span>Blog</span></Link>
+                        <Link to='/courses' className={path == '/courses' ? 'underline' : ''}><span>Courses</span></Link>
                     </div>
                     <div >
-                        {currentUser?
-                            <Link to='/profile' className={path=='/profile'?'underline':''}><span>Profile</span></Link>
+                        {currentUser ?
+                            <div className='flex space-x-4'>
+                                <Link to='/profile' className={path == '/profile' ? 'underline' : ''}><span>Profile</span></Link>
+                                <Link to='/chat/inbox'>Chat</Link>
+                            </div>
                             :
                             <div className='flex space-x-6'>
-                                <Link to='/sign-in' className={path=='/sign-in'?'underline':''}><span>Log in</span></Link>
-                                <Link to='/sign-up' className={path=='/sign-up'?'underline':''}><span>Sign-up</span></Link>
+                                <Link to='/sign-in' className={path == '/sign-in' ? 'underline' : ''}><span>Log in</span></Link>
+                                <Link to='/sign-up' className={path == '/sign-up' ? 'underline' : ''}><span>Sign-up</span></Link>
                             </div>
                         }
                     </div>

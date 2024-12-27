@@ -12,7 +12,7 @@ export const signUp=async(req,res)=>{
         const {username,email,password}=req.body; 
 
         if(!username || !email || !password || username==='' || password==='' || email==='' ){
-            return res.status(505).json({"message":"Enter All fields"});
+            return res.status(505).json({message:"Enter All fields"});
         }
 
         const exitUser=await User.findOne({email});
@@ -100,7 +100,7 @@ export const google = async (req, res) => {
             });
             await newUser.save();
             const token = jwt.sign(
-                { id: newUser._id, isAdmin: newUser.isAdmin },
+                { id: newUser._id},
                 process.env.JWT_SECRET
             );
             const { password, ...rest } = newUser._doc;
