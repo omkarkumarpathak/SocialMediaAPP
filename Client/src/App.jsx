@@ -1,5 +1,5 @@
 import Home from './pages/Home'
-import LogIn from './pages/Login'
+import LogIn from './pages/LogIn'
 import SignUp from './pages/SignUp'
 import Courses from './pages/Courses'
 import Blog from './pages/Blog'
