@@ -20,7 +20,7 @@ function ChatSection() {
     const { currentUser } = useSelector((state) => state.user);
 
     useEffect(()=>{
-        setSocket(io('http://localhost:4000'));
+        setSocket(io('https://mern-full-owmk.onrender.com/'));
     },[])
 
 
