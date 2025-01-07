@@ -76,7 +76,16 @@ io.on('connection', (socket) => {
 
 
 
-mongoose.connect("mongodb+srv://omkarpathakdelhi:LA7uXMHwxSUIOC6l@cluster0.ox1je.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+mongoose.connect("mongodb+srv://omkarpathakdelhi:LA7uXMHwxSUIOC6l@cluster0.ox1je.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",{
+    
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        tls: true,
+        tlsAllowInvalidCertificates: false, // Optional for stricter security
+        tlsCAFile: '/path/to/ca-certificate.pem', // Use this if a custom CA certificate is needed
+        tlsInsecure: false, // Change to true only for debugging
+      
+});
 
 const db = mongoose.connection;
 //Even listeners
@@ -97,7 +106,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-server.listen(process.env.PORT, () => {
+server.listen(4000 || process.env.PORT, () => {
     console.log('Server is listening')
 })
 
