@@ -24,7 +24,7 @@ import { Server } from 'socket.io';
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173", // Allow requests from this origin
+        origin: "https://mern-full-owmk.onrender.com/chat/inbox", // Allow requests from this origin
         methods: ["GET", "POST"], // Allow GET and POST requests
     }
 });
