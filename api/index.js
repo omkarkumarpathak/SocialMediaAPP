@@ -76,15 +76,10 @@ io.on('connection', (socket) => {
 
 
 
-mongoose.connect("mongodb+srv://omkarpathakdelhi:LA7uXMHwxSUIOC6l@cluster0.ox1je.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",{
-    
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        tls: true,
-        tlsAllowInvalidCertificates: false, // Optional for stricter security
-        tlsCAFile: '/path/to/ca-certificate.pem', // Use this if a custom CA certificate is needed
-        tlsInsecure: false, // Change to true only for debugging
-      
+mongoose.connect("mongodb+srv://omkarpathakdelhi:LA7uXMHwxSUIOC6l@cluster0.ox1je.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    tlsInsecure: true
 });
 
 const db = mongoose.connection;
