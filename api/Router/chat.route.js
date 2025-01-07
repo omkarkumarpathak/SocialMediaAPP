@@ -13,7 +13,6 @@ router.post('/createMessage',createMessage);
 //to access all conversation of currentUser 
 router.get('/conversations/:userId',getConversations);
 
-
 //accessing messages of conversationID
 router.get('/messages/:conversationId',getMessages);
 

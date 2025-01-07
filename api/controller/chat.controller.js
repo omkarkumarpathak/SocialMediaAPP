@@ -52,6 +52,11 @@ export const getConversations=async(req,res)=>{
 export const createMessage=async(req,res)=>{
     try {
         const {conversationId, senderId, message, receiverId}=req.body;
+        
+        if(!conversationId && !receiverId){
+            return res.status(400).json({message:"Fill all fields"});
+        }
+
         if(conversationId==='new' && receiverId){
             const newConversation=new Conversation({members:[senderId, receiverId]});
             await newConversation.save();
@@ -60,11 +65,10 @@ export const createMessage=async(req,res)=>{
                 senderId:senderId,
                 message:message,
             })
+
             await newMessage.save();
-            return res.status(200).json({message:"Message & conversation created successfully",conversationId:newConversation._id});
-        }
-        else if(!conversationId && !receiverId){
-            return res.status(400).json({message:"Fill all fields"});
+            return res.status(200).json({newMessage});
+
         }
 
         const newMessage=new ChatMessage({

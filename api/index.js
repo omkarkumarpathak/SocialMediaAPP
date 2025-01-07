@@ -13,15 +13,16 @@ import cookieParser from 'cookie-parser';
 
 import path from 'path'
 
-const __dirname=path.resolve();
+const __dirname = path.resolve();
 
 const app = express();
+dotenv.config();
 
 //creating chat server
 import http from 'http';
 import { Server } from 'socket.io';
 const server = http.createServer(app);
-const io = new Server(server,{
+const io = new Server(server, {
     cors: {
         origin: "http://localhost:5173", // Allow requests from this origin
         methods: ["GET", "POST"], // Allow GET and POST requests
@@ -37,30 +38,39 @@ io.on('connection', (socket) => {
         console.log(currentUserID);
         const isUserExist = users.find(user => user.userID === currentUserID);
         if (!isUserExist) {
-            const user = { userID:currentUserID, socketID: socket.id };
+            const user = { userID: currentUserID, socketID: socket.id };
             users.push(user);
+            io.emit('getUsers', users);
         }
 
-        io.emit('getUsers', users);
     });
 
-    socket.on('sendMessage',({senderId,conversationId,message,receiverId})=>{
-        const receiver=users.find((user)=>user.userID===receiverId);
+    socket.on('sendMessage', ({ senderId, conversationId, message, receiverId }) => {
+        const receiver = users.find((user) => user.userID === receiverId);
 
         //if he online
-        if(receiver){
-            io.to(receiver?.socketID).to(socket.id).emit('getMessage',{
+        if (receiver) {
+            io.to(receiver.socketID).to(socket.id).emit('getMessage', {
                 senderId,
                 conversationId,
                 message,
                 receiverId,
             });
-        } 
+        }
+        else {
+            io.to(socket.id).emit('getMessage', {
+                senderId,
+                conversationId,
+                message,
+                receiverId,
+            });
+        }
     })
-    socket.on('disconnect', () => {  
-        users=users.filter(user=>user.socketID!==socket.id);
+
+    socket.on('disconnect', () => {
+        users = users.filter(user => user.socketID !== socket.id);
         console.log('user disconnected');
-        io.emit('getUsers',users);
+        io.emit('getUsers', users);
     });
 });
 
@@ -86,7 +96,11 @@ db.on('disconnected', () => {
 app.use(express.json());
 app.use(cookieParser());
 
-dotenv.config();
+
+server.listen(process.env.PORT, () => {
+    console.log('Server is listening')
+})
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
@@ -96,14 +110,11 @@ app.use('/api/comment', commentRoute);
 //chat box
 app.use('/api/chat', chatRoute);
 
-app.use(express.static(path.join(__dirname,'/Client/dist')));
+app.use(express.static(path.join(__dirname, '/Client/dist')));
 
-app.get('*',(req,res)=>{
-    res.sendFile(path.join(__dirname,'Client','dist', 'index.html'));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Client', 'dist', 'index.html'));
 })
 
 
-server.listen(process.env.PORT, () => {
-    console.log('Server is listening')
-})
 

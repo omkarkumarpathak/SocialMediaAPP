@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:4000');
-
 function ChatSection() {
     const [conversationUser, setConversationUser] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -13,41 +11,43 @@ function ChatSection() {
     const [ErrorMessage, setErrorMessage] = useState(null);
     const [currentConversationId, setCurrentConversation] = useState(null);
 
+    const [socket,setSocket]=useState(null);
+
     const [currentReceiver, setCurrentReceiver] = useState({});
 
     const [AllUsers, setAllUsers] = useState([]);
 
     const { currentUser } = useSelector((state) => state.user);
 
+    useEffect(()=>{
+        setSocket(io('http://localhost:4000'));
+    },[])
 
-    console.log(inputData);
 
     useEffect(() => {
 
-        socket.on('connect', () => {
+        socket?.on('connect', () => {
             console.log('Connected to server');
         });
 
         if (currentUser) {
-            socket.emit('addUser', currentUser._id);
-            socket.on('getUsers', users => {
+            socket?.emit('addUser', currentUser?._id);
+            socket?.on('getUsers', users => {
                 console.log('active users:', users);
             })
         }
 
-        socket.on('getMessage', (data) => {
+        socket?.on('getMessage', (data) => {
 
-            setMessages(prev => (
-                [...prev, { user: { id: data.senderId, username: null }, message: data.message }]
-            ))
-        })
+            setMessages(prev => {
+               return [...prev, { user: { id: data.senderId, username: null }, message: data.message }]
+            });
+        });
 
         return () => {
-            socket.disconnect();
+            socket?.disconnect();
         };
-    }, []);
-
-
+    }, [socket]);
 
     useEffect(() => {
 
@@ -56,6 +56,7 @@ function ChatSection() {
                 const res = await fetch(`/api/chat/conversations/${currentUser._id}`);
                 const data = await res.json();
                 const userData = data.users.filter(user => user !== null);
+                
                 if (!res.ok) console.log(data.message);
                 if (res.ok) {
                     setConversationUser(userData);
@@ -65,8 +66,6 @@ function ChatSection() {
             }
         }
         fetchConversationUser();
-
-
 
     }, [])
 
@@ -79,12 +78,7 @@ function ChatSection() {
 
                 const data = await res.json();
                 if (res.ok) {
-
-                    const idsToRemove = new Set(conversationUser.map(item => item._id));
-
-                    const result = data.filter((item) => !idsToRemove.has(item._id));
-
-                    setAllUsers(result);
+                    setAllUsers(data);
                 }
             } catch (error) {
                 console.log(error);
@@ -93,7 +87,8 @@ function ChatSection() {
 
         fetchAllUsers();
 
-    }, [])
+    }, [conversationUser])
+
     const fetchMessages = async (conversationId) => {
         try {
             const res = await fetch(`/api/chat/messages/${conversationId}`);
@@ -109,7 +104,6 @@ function ChatSection() {
         }
     }
 
-    console.log(currentReceiver);
 
     const sendMessage = async () => {
 
@@ -117,7 +111,7 @@ function ChatSection() {
             return setErrorMessage('Please type something');
         }
 
-        socket.emit('sendMessage', {
+        socket?.emit('sendMessage', {
             senderId: currentUser._id,
             conversationId: currentConversationId,
             message: inputData,
@@ -139,13 +133,16 @@ function ChatSection() {
             const data = await res.json();
 
             if (res.ok) {
-                socket.emit('sendMessage', inputData);
+                
+                setCurrentConversation(data.conversationId);
                 setInputData('');
             }
 
         } catch (error) {
             console.log(error);
         }
+
+        
 
     }
 
@@ -272,7 +269,8 @@ function ChatSection() {
                                             onClick={() => {
                                                 setCurrentConversation('new');
                                                 fetchMessages();
-                                                setCurrentReceiver(user);
+                                                const {password, _id,...rest}=user;
+                                                setCurrentReceiver({id:_id, ...rest});
                                             }}
                                         >
 

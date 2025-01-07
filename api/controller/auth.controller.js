@@ -1,6 +1,7 @@
 import User from "../Model/user.model.js"
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { createToken } from "../utils/CreateToken.js";
 
 export const test=(req,res)=>{
     res.json({message: "API Test is working"})
@@ -29,6 +30,8 @@ export const signUp=async(req,res)=>{
         })
       
         const response=await newUser.save();
+
+        
         console.log('data saved');
 
         //if successfully saved, below will be called
@@ -56,13 +59,18 @@ export const signIn=async(req,res)=>{
 
         //creating token
        
-        const token = jwt.sign({ id: validUser._id}, process.env.JWT_SECRET);
+        const token = createToken(validUser._id);
 
         //sending token+state data to resist-persist for cookie
         //except password
         const { password: pass, ...rest } = validUser._doc;
         
-        res.status(200).cookie('access_token', token, { httpOnly: true })
+        res.status(200).cookie('access_token', token, 
+            { 
+                httpOnly: true,
+                secure:true,
+                sameSite:"strict"
+             })
             .json(rest);
 
 
