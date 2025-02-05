@@ -40,7 +40,6 @@ function UpdatePost() {
             return setMessage('Fill all fields');
         }
 
-          
         try {
             const res=await fetch(`/api/post/updatePost/${PostId}/${formData.userId}/${currentUser._id}`,{
                 method:'PUT',

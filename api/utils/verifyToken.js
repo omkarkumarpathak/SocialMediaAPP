@@ -4,12 +4,12 @@ dotenv.config();
 
 export const verifyToken=(req,res,next)=>{
     const token=req.cookies.access_token;
-   
+
     if(!token){
-        return res.status(401).json('Unauthorised')
+        return res.status(403).json('Unauthoriseddd')
     }
     
-    console.log(process.env.JWT_SECRET);
+    
 
     jwt.verify(token, process.env.JWT_SECRET,(err,user)=>{
         if(err){
@@ -18,5 +18,9 @@ export const verifyToken=(req,res,next)=>{
         req.user=user;
         next();
     });
+    console.log(req.user)
+   
+    
+    //console.log(req.cookies.access_token)
 
 };

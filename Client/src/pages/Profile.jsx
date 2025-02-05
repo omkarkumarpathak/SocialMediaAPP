@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutSuccess, updateUserFailure, updateUserStart, updateUserSuccess } from '../redux/user/userSlice';
 import PostStyle from '../components/PostStyle';
-import {getDownloadURL, getStorage,ref, uploadBytesResumable} from 'firebase/storage';
-import {app} from '../../firebase.js'
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import { app } from '../../firebase.js'
 
 function Profile() {
 
@@ -15,17 +15,17 @@ function Profile() {
 
   const [Posts, setPosts] = useState([]);
 
-  const [profileImage, setProfileImage]=useState(null);
-  const [profileImageURL, setProfileImageURL]=useState(null);
-  const [ProfileImageMessage, setProfileImageMessage]=useState(null);
-  const [ProfileImageError, setProfileImageError]=useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [profileImageURL, setProfileImageURL] = useState(null);
+  const [ProfileImageMessage, setProfileImageMessage] = useState(null);
+  const [ProfileImageError, setProfileImageError] = useState(null);
 
   const { currentUser, error } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const imagePicker=useRef();
+  const imagePicker = useRef();
 
   const signOut = async () => {
     try {
@@ -115,14 +115,14 @@ function Profile() {
     fetchPosts();
 
   }, [])
-  useEffect(()=>{
+  useEffect(() => {
 
-    const uploadProfileImage=async()=>{
-      const storage=getStorage(app);
-      const fileName=new Date().getTime()+profileImage.name;
-      const storageRef=ref(storage,fileName);
+    const uploadProfileImage = async () => {
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + profileImage.name;
+      const storageRef = ref(storage, fileName);
 
-      const UploadTask=uploadBytesResumable(storageRef,profileImage);
+      const UploadTask = uploadBytesResumable(storageRef, profileImage);
 
       UploadTask.on(
         'state_changed',
@@ -142,31 +142,31 @@ function Profile() {
             setProfileImageURL(downloadURL);
             setProfileData({ ...ProfileData, image: downloadURL });
             setProfileImageMessage(false);
-            
+
           });
         }
       )
 
     }
 
-    if(profileImage) uploadProfileImage();
+    if (profileImage) uploadProfileImage();
 
-  },[profileImage])
+  }, [profileImage])
 
 
-  const handleImageChange=async(e)=>{
-    const file=e.target.files[0];
-    if(file){
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
       setProfileImage(file);
       setProfileImageURL(URL.createObjectURL(file));
     }
   }
 
   return (
-    <div className=' bg-red-400 flex flex-col  items-center'>
-      <div className='mt-24 p-10 bg-blue-50 w-[50%]  flex flex-col space-y-4 justify-center items-center'>
+    <div className=' bg-teal-50 flex flex-col  items-center'>
+      <div className='mt-24 p-10 border border-black rounded-lg bg-blue-50 w-[60%] h-[60%] md:w-[35%]  flex flex-col space-y-4 items-center'>
 
-        <input type="file" accept='image/*' ref={imagePicker} onChange={handleImageChange} hidden/> 
+        <input type="file" accept='image/*' ref={imagePicker} onChange={handleImageChange} hidden />
         {
           ProfileImageError && (
             <span className='mt-2 text-red-600 font-semibold text-sm'>{ProfileImageError}</span>
@@ -179,32 +179,34 @@ function Profile() {
         }
         <div className='w-20 '>
           <img className='rounded-full cursor-pointer'
-           src={profileImageURL || currentUser.image}
-           alt="" onClick={()=>{imagePicker.current.click(); setEdit(!edit)}}
-           />
+            src={profileImageURL || currentUser.image}
+            alt="" onClick={() => { imagePicker.current.click(); setEdit(!edit) }}
+          />
         </div>
-        <form action="" >
+        <form action="" className='w-full' >
           <div className='flex flex-col'>
             <label className='text-sm font-semibold' name='username'>Username</label>
-            <input className='mt-2 p-2 rounded-sm' id='username' onChange={onChange} type="text" placeholder={currentUser.username} disabled={edit} />
+            <input className=' mt-2 p-2 rounded-md border border-teal-400 *:' id='username' onChange={onChange} type="text" placeholder={currentUser.username} disabled={edit} />
           </div>
 
           <div className='flex flex-col'>
             <label className='text-sm font-semibold' name='password'>Password</label>
-            <input className='mt-2 p-2 rounded-sm' id='password' onChange={onChange} type="text" placeholder="password" disabled={edit} />
+            <input className='mt-2 p-2 rounded-md border border-teal-400 *:' id='password' onChange={onChange} type="text" placeholder="password" disabled={edit} />
           </div>
 
 
           <div className='mt-3 flex flex-col'>
+
             <label className='text-sm font-semibold' name='email'>Email</label>
-            <input className='mt-2 p-2 rounded-sm' id='email' onChange={onChange} type="text" placeholder={currentUser.email} disabled={edit} />
+            <input className='mt-2 p-2 rounded-md border border-teal-400 *:' id='email' onChange={onChange} type="text" placeholder={currentUser.email} disabled={edit} />
+
             <span className='flex justify-between'>Want to edit?
               {edit && (<button type='button' onClick={() => setEdit(!edit)} className='text-blue-600 font-semibold underline'>
                 "Edit"
               </button>)
               }
               {!edit && (<button type='submit' onClick={handleSubmit}
-                  disabled={ProfileImageMessage} className={` font-semibold underline ${ProfileImageMessage? 'text-blue-200':'text-blue-600'}`}>
+                disabled={ProfileImageMessage} className={` font-semibold underline ${ProfileImageMessage ? 'text-blue-200' : 'text-blue-600'}`}>
                 Submit
               </button>
               )
@@ -218,9 +220,9 @@ function Profile() {
             {updateMessage && (
               <span className='mt-2 text-red-600 font-semibold text-sm'>{updateMessage}</span>
             )}
-            
 
-            
+
+
 
           </div>
           <div className=' mt-5 flex justify-between'>
@@ -233,11 +235,12 @@ function Profile() {
             </Link>
           </div>
         </form>
-      </div>
 
-      <div className='w-[90%] mb-10 p-5 mt-10 bg-yellow-300 '>
-        <div className='mt-5 flex flex-col items-center space-x-4 justify-center '>
-          <h1 className='text-xl font-semibold'>My Posts</h1>
+      </div>
+      <div className='w-full p-8  mt-10 bg-teal-200 '>
+        <h1 className='text-xl font-semibold text-center'>My Posts</h1>
+        <div className='mt-5 flex flex-col space-x-4 justify-center '>
+
           <div className='flex mt-10 space-x-8 ' >
             {
               Posts && Posts.map((post, idx) => (

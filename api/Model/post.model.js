@@ -18,6 +18,14 @@ const postSchema=new mongoose.Schema({
         type:String,
         default:"https://cdn.pixabay.com/photo/2023/04/15/05/48/woman-7927039_1280.png"
     },
+    likes:{
+        type:Array,
+        default:[],
+    },
+    noOfLikes:{
+        type:Number,
+        default:0,
+    },
 },{timestamps:true})
 
 const Post=mongoose.model('Post',postSchema);

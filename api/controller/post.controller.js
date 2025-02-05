@@ -61,6 +61,10 @@ export const deletePost=async(req,res)=>{
 
 export const updatePost=async(req,res)=>{
 
+    if(req.user.id!=req.params.PostCreatorId){
+        return res.status(401).json({message:"You are not owner of this post"});
+    }
+    
     const {title,content}=req.body;
     if(!title || !content || title==''|| content==''){
         return res.status(200).json("Fill all fields");
@@ -83,3 +87,29 @@ export const updatePost=async(req,res)=>{
 
 }
 
+export const likePost=async(req,res)=>{
+   
+    try {
+        const post=await Post.findById(req.params.PostId);
+        if(!post) return res.status(401).json({message:"Not found Post"});
+        
+        
+        const userIndex=post.likes.indexOf(req.user.id);
+
+        if(userIndex==-1){
+            post.noOfLikes+=1;
+            post.likes.push(req.user.id);
+        }
+        else{
+            post.noOfLikes-=1;
+            post.likes.splice(userIndex,1);
+        }
+
+        await post.save();
+
+        return res.status(200).json(post);
+        
+    } catch (error) {
+        return res.status(501).json({error});
+    }
+}

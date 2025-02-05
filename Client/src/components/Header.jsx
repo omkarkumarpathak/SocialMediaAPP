@@ -12,7 +12,7 @@ function Header() {
         <header className='w-full bg-blue-300 flex justify-center h-14 items-center'>
             <div className='flex justify-between w-[85%] '>
                 <Link to='/'>Logo</Link>
-                <div className='flex w-[50%] justify-between'>
+                <div className='flex font-semibold w-[50%] text-sm md:text-md justify-between'>
                     <div className='flex space-x-9'>
                         <Link to='/' className={path == '/' ? 'underline' : ''}><span>Home</span></Link>
                         <Link to='/blog' className={path == '/blog' ? 'underline' : ''}><span>Blog</span></Link>
@@ -22,7 +22,7 @@ function Header() {
                         {currentUser ?
                             <div className='flex space-x-4'>
                                 <Link to='/profile' className={path == '/profile' ? 'underline' : ''}><span>Profile</span></Link>
-                                <Link to='/chat/inbox'>Chat</Link>
+                                <Link to='/chat/inbox' className={path == '/chat/inbox' ? 'underline' : ''}>Chat</Link>
                             </div>
                             :
                             <div className='flex space-x-6'>

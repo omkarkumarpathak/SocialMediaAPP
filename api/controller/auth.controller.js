@@ -18,7 +18,7 @@ export const signUp=async(req,res)=>{
 
         const exitUser=await User.findOne({email});
         if(exitUser){
-            return res.status(401).json({message:"User already exist"});
+            return res.status(401).json({success:false,message:"User already exist"});
         }
 
         const hashedPassword=bcryptjs.hashSync(password,10);
@@ -31,7 +31,6 @@ export const signUp=async(req,res)=>{
       
         const response=await newUser.save();
 
-        
         console.log('data saved');
 
         //if successfully saved, below will be called
@@ -50,16 +49,16 @@ export const signIn=async(req,res)=>{
         
         const validUser=await User.findOne({email});
         if(!validUser){
-            return res.status(401).json({message:"User Not found"});
+            return res.status(401).json({success:false,message:"User Not found"});
         }
 
         const matchedPassword=bcryptjs.compareSync(password,validUser.password);
 
-        if(!matchedPassword) return res.status(401).json({message:"Invalid Password"});
+        if(!matchedPassword) return res.status(401).json({success:false,message:"Invalid email or Password"});
 
         //creating token
        
-        const token = createToken(validUser._id);
+        const token= jwt.sign({id:validUser._id},process.env.JWT_SECRET,{ expiresIn: '1h' });
 
         //sending token+state data to resist-persist for cookie
         //except password

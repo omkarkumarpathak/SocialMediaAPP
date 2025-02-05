@@ -9,6 +9,8 @@ function CommentSection({ PostId }) {
     const [comment, setComment] = useState('');
     const [commentError, setCommentError] = useState('');
     const [AllComments, setAllComments] = useState([]);
+    const [message,setMessage]=useState('');
+
     const { currentUser } = useSelector((state) => state.user)
 
     console.log(AllComments);
@@ -49,6 +51,11 @@ function CommentSection({ PostId }) {
     }
 
     const handleCommentLikes = async (commentId) => {
+
+        if(!currentUser){
+            setMessage("Please sign-in first");
+        }
+
         try {
             const res = await fetch(`/api/comment/likedComment/${commentId}`, {
                 method: 'PUT'
@@ -91,12 +98,12 @@ function CommentSection({ PostId }) {
             })
 
             const data = await res.json();
-
+            console.log(data.message);
             if (res.ok) {
                 setAllComments(
                     (AllComments) => AllComments.filter((comment) => comment._id !== commentId)
                 );
-                console.log(data.message);
+                
             }
 
         } catch (error) {
@@ -129,7 +136,7 @@ function CommentSection({ PostId }) {
     }
 
     return (
-        <div className='p-10  bg-blue-100'>
+        <div className='p-10  bg-blue-200 flex flex-col items-center justify-center'>
 
             {currentUser ?
                 (
@@ -163,7 +170,7 @@ function CommentSection({ PostId }) {
                 )
             }
 
-
+            {message && ( <div className='text-red-600 font-semibold mb-3'>*{message}*</div>)}
 
             {AllComments && AllComments.length != 0 ?
                 (
@@ -180,7 +187,7 @@ function CommentSection({ PostId }) {
                                 handleCommentLikes={(commentId) => {
                                     handleCommentLikes(commentId);
                                 }}
-
+                                currentUser={currentUser}
                             />
                         ))}
 

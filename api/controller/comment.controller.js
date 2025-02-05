@@ -42,7 +42,7 @@ export const deleteComment=async(req,res)=>{
         return res.status(200).json({message:'Comment deleted success'});
         
     } catch (error) {
-        return res.status(401).json("ISE")
+        return res.status(401).json({message:"ISE"})
     }
 }
 
@@ -81,13 +81,18 @@ export const getComments=async(req,res)=>{
 }
 
 export const likedComment=async(req,res)=>{
+    
+    if(!req.user){
+        return res.status(401).json({success:false, message:"Please sign-in first"})
+    }
+
     try {
         const comment=await Comment.findById(req.params.commentId);
         if(!comment){
             return res.status(401).json("Comment not found");
         };
  
-        const userIndex=comment.likes.indexOf(req.user.id);
+        const userIndex=comment.likes.indexOf(req.user?.id);
 
         if(userIndex===-1){
             

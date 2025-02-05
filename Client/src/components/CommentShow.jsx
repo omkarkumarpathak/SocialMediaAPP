@@ -6,7 +6,7 @@ import { MdDelete } from "react-icons/md";
 import { IoMdOpen } from "react-icons/io";
 
 
-function CommentShow({ CurrComment, onDelete, onEdit, handleCommentLikes }) {
+function CommentShow({ CurrComment, onDelete, onEdit, handleCommentLikes, currentUser }) {
 
     const [user, setUser] = useState({});
 
@@ -14,8 +14,6 @@ function CommentShow({ CurrComment, onDelete, onEdit, handleCommentLikes }) {
     const [isEdit, setEdit] = useState(false);
 
     const [CommentToUpdate, setCommentToUpdate] = useState('');
-
-    const { currentUser } = useSelector((state) => state.user);
 
     useEffect(() => {
         const fetchCommentUser = async () => {
@@ -32,7 +30,7 @@ function CommentShow({ CurrComment, onDelete, onEdit, handleCommentLikes }) {
 
         fetchCommentUser();
 
-    }, [CurrComment])
+    }, [])
 
 
 
@@ -53,7 +51,7 @@ function CommentShow({ CurrComment, onDelete, onEdit, handleCommentLikes }) {
                     : <p className='text-gray-800'>{CurrComment.content}</p>
                 }
 
-                {CurrComment.userId == currentUser._id
+                {CurrComment.userId == currentUser?._id
                     && <div className='flex items-center space-x-2'>
                         {!isEdit ?
                             <>
@@ -70,12 +68,12 @@ function CommentShow({ CurrComment, onDelete, onEdit, handleCommentLikes }) {
             </div>
 
             <div className='flex items-center space-x-2'>
-                {CurrComment.likes.includes(currentUser._id) ?
+                {CurrComment.likes.includes(currentUser?._id) ?
                   
-                  <AiFillLike className='cursor-pointer' onClick={() =>handleCommentLikes(CurrComment._id)} /> :
-                    <AiOutlineLike className='cursor-pointer' onClick={() =>handleCommentLikes(CurrComment._id)} />
+                  <AiFillLike className='cursor-pointer' onClick={() =>handleCommentLikes(CurrComment?._id)} /> :
+                    <AiOutlineLike className='cursor-pointer' onClick={() =>handleCommentLikes(CurrComment?._id)} />
                 }
-                <span className='text-sm text-gray-500'>{CurrComment.noOfLikes} Likes</span>
+                <span className='text-sm text-gray-500'>{CurrComment?.noOfLikes} Likes</span>
                 {CommentError && <p>{CommentError}</p>}
             </div>
         </div>

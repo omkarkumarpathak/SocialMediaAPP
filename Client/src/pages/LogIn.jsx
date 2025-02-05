@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import { signInFailure,signInSuccess,signInStart } from '../redux/user/userSlice';
 import OAuth from '../components/OAuth';
 function LogIn() {
 
   const [formData,setFormData]=useState({});
-  const {error:Errormessage} =useSelector((state)=>state.user);
+  const {error} =useSelector((state)=>state.user);
  
 
   const navigate=useNavigate();
@@ -49,9 +49,9 @@ function LogIn() {
   }
   return (
     <div className='h-screen bg-red-100 w-full flex justify-center '>
-      <div className='p-3  w-[50%] h-[60%] bg-blue-300 mt-28 flex flex-col items-center'>
+      <div className='p-3  w-[50%] h-[65%] bg-blue-300 mt-28 flex flex-col items-center'>
         <h1 className='text-3xl font-semibold'>Sing In</h1>
-        <form className='w-full h-full p-4 mt-5 flex flex-col'>
+        <form className='w-full p-4 mt-5 flex flex-col'>
           
           <div className='w-full flex flex-col mt-3'>
             <label name='email'>Email</label>
@@ -65,8 +65,13 @@ function LogIn() {
 
           <button onClick={HandleSubmit}  type='submit' className='bg-red-700 text-white p-2 mt-9 hover:bg-red-800'>LogIn</button>
           <OAuth/>
+
+          <p className='mt-4'><span  className=' text-blue-900'>Don't have account?</span> <Link className='hover:underline' to='/sign-up'>Sign Up</Link></p>
+          {error? <span className='text-red-600 text-center mt-4 font-semibold'>
+            *{error}*</span>:null
+           }
         </form>
-        {Errormessage? <span>{Errormessage}</span>:null }
+        
       </div>
     </div>
   )
