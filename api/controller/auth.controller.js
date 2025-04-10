@@ -58,7 +58,7 @@ export const signIn=async(req,res)=>{
 
         //creating token
        
-        const token= jwt.sign({id:validUser._id},process.env.JWT_SECRET,{ expiresIn: '1h' });
+        const token= jwt.sign({id:validUser._id, isAdmin: validUser.admin},process.env.JWT_SECRET,{ expiresIn: '1h' });
 
         //sending token+state data to resist-persist for cookie
         //except password

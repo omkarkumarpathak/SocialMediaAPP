@@ -42,9 +42,6 @@ function PostShow() {
       const data = await res.json();
 
       if (res.ok) {
-        setPost((prev) =>
-          prev.filter((post) => post._id !== PostId)
-        )
         navigate('/');
       }
       if (!res.ok) {

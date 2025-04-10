@@ -6,6 +6,10 @@ const userSchema=new mongoose.Schema({
         unique:true,
         required:true,
     },
+    admin:{
+        type:Boolean,
+        default:false,
+    },
     email:{
         type:String,
         unique:true,
