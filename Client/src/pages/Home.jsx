@@ -29,7 +29,7 @@ function Home() {
   if(loading) return <Spinner/>
 
   return (
-    <div>
+    <div >
       <div className='p-5 bg-yellow-100'>
         {posts && (
           

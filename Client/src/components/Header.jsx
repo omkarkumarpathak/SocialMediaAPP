@@ -1,46 +1,47 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { GiHamburgerMenu } from "react-icons/gi";
 
 
 function Header() {
 
     const path = useLocation().pathname;
-    const location=useLocation();
-    const navigate=useNavigate();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const { currentUser } = useSelector((state) => state.user);
-    const [searchTerm, setSearch]=useState('');
+    const [searchTerm, setSearch] = useState('');
 
-    const HandleSubmitSearch=(e)=>{
+    const HandleSubmitSearch = (e) => {
         e.preventDefault();
-        if(searchTerm.length==0){
+        if (searchTerm.length == 0) {
             return;
         }
-        const urlParams=new URLSearchParams(location.search);
+        const urlParams = new URLSearchParams(location.search);
         urlParams.set('searchTerm', searchTerm);
-        const searchQuery=urlParams.toString();
+        const searchQuery = urlParams.toString();
         navigate(`/search?${searchQuery}`);
     }
 
     console.log(searchTerm);
 
     return (
-        <header className='w-full bg-blue-300 flex justify-center h-16 items-center'>
-            <div className='flex items-center justify-between w-[85%] '>
+        <header className=' bg-blue-300 '>
+            <div className='w-[80%] p-2 space-x-6 flex justify-between items-center '>
                 <Link to='/'>Logo</Link>
 
-                <form onSubmit={HandleSubmitSearch}>
-                    <input onChange={(e)=>setSearch(e.target.value)}  type="text"  className='p-1 rounded-lg bg-gray-100'/>
-                    <button type='submit' className='ml-2 bg-red-400 text-sm p-1 rounded-lg hover:text-white hover:bg-red-600'>search</button>
+                <form  className='flex '  onSubmit={HandleSubmitSearch}>
+                    <input onChange={(e) => setSearch(e.target.value)} type="text" className=' rounded-lg bg-gray-100' />
+                    <button type='submit' className='ml-2 bg-red-400 text-sm p-1 rounded-lg text-md sm:text-sm hover:text-white hover:bg-red-600'>search</button>
                 </form>
-                
-                <div className='flex font-semibold w-[50%] text-sm md:text-md justify-between'>
+
+                <div className='font-semibold hidden sm:flex space-x-4 justify-between'>
                     <div className='flex space-x-9'>
                         <Link to='/' className={path == '/' ? 'underline' : ''}><span>Home</span></Link>
                         <Link to='/courses' className={path == '/courses' ? 'underline' : ''}><span>Courses</span></Link>
                     </div>
-                    <div >
+                    <div>
                         {currentUser ?
                             <div className='flex space-x-4'>
                                 <Link to='/dashboard?tab=profile' className={path == '/profile' ? 'underline' : ''}><span>Profile</span></Link>
@@ -53,9 +54,12 @@ function Header() {
                             </div>
                         }
                     </div>
-
+                </div>
+                <div className='sm:hidden'>
+                    <GiHamburgerMenu />
                 </div>
             </div>
+
         </header>
     )
 }
