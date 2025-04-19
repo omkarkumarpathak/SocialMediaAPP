@@ -149,8 +149,8 @@ function Profile() {
   }
 
   return (
-    <div className='w-full bg-teal-50 flex flex-col  items-center'>
-      <div className=' mt-24 p-10 border border-black rounded-lg bg-blue-50 w-[60%] md:w-[50%]  flex flex-col space-y-4 items-center'>
+    <div className='w-full mb-14 bg-teal-50 flex flex-col  items-center'>
+      <div className=' mt-24 p-10 border border-black rounded-lg bg-blue-50 w-[90%] md:w-[50%]  flex flex-col space-y-4 items-center'>
 
         <input type="file" accept='image/*' ref={imagePicker} onChange={handleImageChange} hidden />
         {

@@ -177,7 +177,7 @@ function ChatSection() {
                                             }>
 
                                             <img src={curr_conversation.user.image} className='h-8 rounded-full' alt="" />
-                                            <span>{curr_conversation.user.username}</span>
+                                            <span className='text-xs flex items-center'>{curr_conversation.user.username}</span>
                                         </div>
                                     ))
                                 }

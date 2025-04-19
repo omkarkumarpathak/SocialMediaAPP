@@ -8,7 +8,7 @@ function SideBar() {
     const { currentUser } = useSelector((state) => state.user);
 
     return (
-        <div className='h-screen p-5 w-[30%] bg-teal-100 '>
+        <div className=' p-5 w-[30%] bg-teal-100 '>
 
             <div className='mt-5 flex flex-col items-center gap-y-5'>
                 <button onClick={() => navigate('/dashboard?tab=profile')} className='w-full bg-gray-300 p-1 rounded-md' >Profile</button>
