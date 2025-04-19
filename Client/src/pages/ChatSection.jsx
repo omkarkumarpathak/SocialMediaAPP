@@ -159,7 +159,7 @@ function ChatSection() {
     return (
         <div className='flex justify-center'>
             <div className='flex w-full '>
-                <div className='bg-gray-300 w-[30%] h-screen'>
+                <div className='bg-gray-300 w-[30%] '>
                     <h3 className='mt-3 ml-5 text-xs font-bold p-2 '>Conversation</h3>
 
                     {
