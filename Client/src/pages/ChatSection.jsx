@@ -158,7 +158,7 @@ function ChatSection() {
 
     return (
         <div className='flex justify-center'>
-            <div className='flex w-[90%] '>
+            <div className='flex w-full '>
                 <div className='bg-gray-300 w-[30%] h-screen'>
                     <h3 className='mt-3 ml-5 text-xs font-bold p-2 '>Conversation</h3>
 
@@ -187,8 +187,8 @@ function ChatSection() {
                     }
                 </div>
 
-                <div className='bg-white w-[100%] p-3'>
-                    <div className='bg-yellow-200 p-2 w-[90%] flex flex-col justify-center'>
+                <div className='bg-red-100 w-full p-3'>
+                    <div className='bg-yellow-200 p-2 w-full flex flex-col justify-center'>
                         <div ref={chatRef} className=' bg-red-200 h-[30rem] rounded-md p-3 pb-10 overflow-auto
                                                         '>
 
@@ -257,7 +257,7 @@ function ChatSection() {
                 </div>
 
 
-                <div className='bg-gray-300 w-[30%] h-screen'>
+                <div className='bg-gray-300 hidden sm:flex w-[30%] h-screen'>
                     {
                         AllUsers && AllUsers.length != 0 && (
                             <div className='flex flex-col space-y-4 py-3 px-1.5'>
