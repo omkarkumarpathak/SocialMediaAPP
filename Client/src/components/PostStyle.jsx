@@ -6,9 +6,9 @@ import { FaRegCommentDots } from "react-icons/fa";
 function PostStyle({ post }) {
 
     return (
-        <div className='p-2 w-[120px] md:w-36 md:h-64 rounded-lg mt-5 bg-red-200 border border-black'>
+        <div className='p-2 w-[120px] md:w-36 md:h-64 rounded-lg mb-11 mt-5 bg-red-200 border border-black'>
             <div className='flex mt-5 flex-col '>
-                <img className='object-cover h-32 w-full ' src={post.image} alt="" />
+                <img className='object-cover h-24 w-full ' src={post.image} alt="" />
                 <span>{post.title}</span>
 
                 <div className='mt-2 flex items-center gap-x-2 text-sm'>

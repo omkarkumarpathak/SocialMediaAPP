@@ -49,7 +49,7 @@ function AdminDash() {
 
 
     return (
-        <div className="overflow-x-auto p-4">
+        <div className="h-screen overflow-x-auto p-4">
             <table className="min-w-full bg-white border border-gray-200">
                 <thead>
                     <tr className="bg-gray-100 border-b">

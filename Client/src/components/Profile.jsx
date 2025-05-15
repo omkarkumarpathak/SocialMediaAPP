@@ -134,7 +134,6 @@ function Profile() {
       )
 
     }
-
     if (profileImage) uploadProfileImage();
 
   }, [profileImage])
@@ -166,7 +165,7 @@ function Profile() {
         <div className='w-20 '>
           <img className='rounded-full cursor-pointer'
             src={profileImageURL || currentUser.image}
-            alt="" onClick={() => { imagePicker.current.click(); setEdit(!edit) }}
+            alt="hi" onClick={() => { imagePicker.current.click(); setEdit(!edit) }}
           />
         </div>
         <form action="" className='w-full' >
