@@ -12,7 +12,7 @@ function SearchPage() {
     })
 
     const location = useLocation();
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
     console.log(filter);
 
@@ -23,7 +23,8 @@ function SearchPage() {
         const sortBy = urlParam.get('sortBy');
 
         if (searchTerm || sortBy) {
-            setFilter({...filter,
+            setFilter({
+                ...filter,
                 searchTerm: searchTerm || '',
                 sortBy: sortBy || 'desc'
             })
@@ -31,13 +32,13 @@ function SearchPage() {
 
         const fetchPosts = async () => {
             try {
-            
-                const searchQuery=urlParam.toString();
-               const res=await fetch(`/api/post/getPosts?${searchQuery}`);
-               const data=await res.json();
-               if(res.ok){
-                setPosts(data.posts);
-               }
+
+                const searchQuery = urlParam.toString();
+                const res = await fetch(`/api/post/getPosts?${searchQuery}`);
+                const data = await res.json();
+                if (res.ok) {
+                    setPosts(data.posts);
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -47,23 +48,23 @@ function SearchPage() {
 
     console.log(posts);
 
-    const handleFilterChange=(e)=>{
-        if(e.target.id==='searchTerm'){
-            setFilter({...filter, searchTerm:e.target.value})
+    const handleFilterChange = (e) => {
+        if (e.target.id === 'searchTerm') {
+            setFilter({ ...filter, searchTerm: e.target.value })
         }
-        
-        if(e.target.id==='sortBy'){
-            setFilter({...filter, sortBy:e.target.value})
+
+        if (e.target.id === 'sortBy') {
+            setFilter({ ...filter, sortBy: e.target.value })
         }
     }
 
-    const SearchFilter=()=>{
+    const SearchFilter = () => {
         const urlParam = new URLSearchParams(location.search);
-        urlParam.set('searchTerm',filter?.searchTerm);
-        urlParam.set('sortBy',filter?.sortBy);
-        const searchQuery=urlParam.toString();
+        urlParam.set('searchTerm', filter?.searchTerm);
+        urlParam.set('sortBy', filter?.sortBy);
+        const searchQuery = urlParam.toString();
         navigate(`/search?${searchQuery}`);
-        
+
     }
 
     //  console.log(posts);
@@ -71,19 +72,22 @@ function SearchPage() {
         <div className='h-screen flex w-full'>
             <div className='p-5 flex flex-col space-y-5 w-[30%] bg-gray-300 h-screen'>
                 Sidebar
-                <input type="text" value={filter.searchTerm}  id='searchTerm' onChange={handleFilterChange} />
-                <select onChange={handleFilterChange}  value={filter.sortBy} name="" id="sortBy">
+                <input type="text" value={filter.searchTerm} id='searchTerm' onChange={handleFilterChange} />
+                <select onChange={handleFilterChange} value={filter.sortBy} name="" id="sortBy">
                     <option value='desc'  >Desc</option>
-                    <option  id='asce'>Asce</option>
+                    <option id='asce'>Asce</option>
                 </select>
                 <button onClick={SearchFilter}>Search Filter</button>
             </div>
-            <div className='p-8 ml-5 w-full flex space-x-8'>
-                {
-                    posts?.map((post,idx)=>{
-                       return <PostStyle  post={post}/>
-                    })
-                }
+            <div className='p-8 m-5 w-full'>
+                <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                    {
+                        posts?.map((post, idx) => {
+                            return <PostStyle post={post} />
+                        })
+                    }
+                </div>
+
             </div>
         </div>
     )

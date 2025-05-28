@@ -14,7 +14,8 @@ import PostShow from './pages/PostShow'
 import SearchPage from './pages/SearchPage'
 import UpdatePost from './pages/UpdatePost'
 import ChatSection from './pages/ChatSection'
-import AdminRoute from './components/AdminRoute'
+import AdminRoute from './components/AdminRoute' 
+import PasswordReset from './pages/PasswordChange/PasswordReset' 
 
 export default function App() {
   return (
@@ -29,7 +30,8 @@ export default function App() {
           <Route path='/courses' element={<Courses />}></Route>
           <Route path='/sign-in' element={<LogIn />}></Route>
           <Route path='/search' element={<SearchPage />}></Route>
-          <Route path='/sign-up' element={<SignUp />}></Route>
+          <Route path='/reset/password' element={<PasswordReset/>}></Route>
+           <Route path='/sign-up' element={<SignUp />}></Route>
           <Route path='/post/:PostId' element={<PostShow />}></Route>
           <Route path='/post/update/:PostId' element={<UpdatePost />}></Route>
           <Route element={<PrivateRoute />}>

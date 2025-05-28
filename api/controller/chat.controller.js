@@ -9,7 +9,7 @@ export const conversation=async(req,res)=>{
 
         if(!senderId || !receiverId) return res.status(404).json({message:"Enter all fields"});
 
-        const isExist=await Conversation.find({members:[SVGAnimatedNumberList,receiverId]});
+        const isExist=await Conversation.find({members:[senderId,receiverId]});
         if(isExist) return res.status(401).json({message:"Conversation Already exists"});
        
         const newConversation =new Conversation(

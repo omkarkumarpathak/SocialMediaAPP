@@ -148,7 +148,7 @@ function Profile() {
   }
 
   return (
-    <div className='w-full mb-14 bg-teal-50 flex flex-col  items-center'>
+    <div className='h-screen w-full mb-14 bg-teal-50 flex flex-col  items-center'>
       <div className=' mt-24 p-10 border border-black rounded-lg bg-blue-50 w-[90%] md:w-[50%]  flex flex-col space-y-4 items-center'>
 
         <input type="file" accept='image/*' ref={imagePicker} onChange={handleImageChange} hidden />
@@ -162,13 +162,13 @@ function Profile() {
             <span className='mt-2 text-red-600 font-semibold text-sm'>Uploading: {ProfileImageMessage} %</span>
           )
         }
-        <div className='w-20 '>
-          <img className='rounded-full cursor-pointer'
+        <div className='w-20'>
+          <img className='h-18 w-18 rounded-full cursor-pointer'
             src={profileImageURL || currentUser.image}
             alt="hi" onClick={() => { imagePicker.current.click(); setEdit(!edit) }}
           />
         </div>
-        <form action="" className='w-full' >
+        <form action="" className='w-full space-y-2' >
           <div className='flex flex-col'>
             <label className='text-sm font-semibold' name='username'>Username</label>
             <input className=' mt-2 p-2 rounded-md border border-teal-400 *:' id='username' onChange={onChange} type="text" placeholder={currentUser.username} disabled={edit} />
@@ -185,7 +185,7 @@ function Profile() {
             <label className='text-sm font-semibold' name='email'>Email</label>
             <input className='mt-2 p-2 rounded-md border border-teal-400 *:' id='email' onChange={onChange} type="text" placeholder={currentUser.email} disabled={edit} />
 
-            <span className='flex justify-between'>Want to edit?
+            <span className='mt-5 flex justify-between'>Want to edit?
               {edit && (<button type='button' onClick={() => setEdit(!edit)} className='text-blue-600 font-semibold underline'>
                 "Edit"
               </button>)
@@ -207,21 +207,19 @@ function Profile() {
             )}
 
           </div>
-          <div className=' mt-5 flex justify-between'>
-            <button onClick={signOut}><span className='bg-red-500 w-full px-2 py-1 rounded-md text-white text-xs font-semibold'> Sign-Out</span></button>
-            <button type='button' onClick={DeleteUser}><span className='bg-red-500 w-full px-2 py-1 rounded-md text-white text-xs font-semibold'> Delete Account</span></button>
-          </div>
-          <div className='w-full bg-green-600 mt-5 rounded-md flex justify-center items-center'>
-            <Link to='/create-post'>
-              <span className='p-1 rounded-md text-white text-sm font-semibold'>Create Post</span>
-            </Link>
+          <div className=' flex justify-between'>
+            <button onClick={signOut}><span className='bg-gray-500 w-full p-1 rounded-md text-white text-xs font-semibold'> Log-Out</span></button>
+            <button type='button' onClick={DeleteUser}><span className='bg-gray-500 w-full p-1 rounded-md text-white text-xs font-semibold'> Delete Account</span></button>
           </div>
 
         </form>
 
+        <div className='w-full mb-20 p-1 bg-blue-500 hover:bg-blue-700 cursor-pointer rounded-lg'>
+          <Link to='/create-post'>
+            <div className='rounded-md text-center text-white text-sm font-semibold'>Create Post</div>
+          </Link>
+        </div>
       </div>
-
-     
 
     </div>
   )

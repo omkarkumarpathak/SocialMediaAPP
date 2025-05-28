@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import OAuth from '../components/OAuth';
 
 function SignUp() {
 
@@ -39,24 +40,32 @@ function SignUp() {
   console.log(form);
 
   return (
-    <div className='h-screen bg-red-100 w-full flex justify-center '>
-      <div className='p-3  w-[50%] h-[65%] bg-blue-300 mt-28 flex flex-col items-center'>
+    <div className='h-screen mb-10 bg-red-100 w-full flex justify-center '>
+      <div className='p-3  w-[50%] h-[83%] rounded-lg bg-blue-300 mt-28 flex flex-col items-center'>
         <h1 className='text-3xl font-semibold'>Sign Up</h1>
         <form className='w-full h-full p-4 mt-5 flex flex-col'>
 
           <div className='w-full flex flex-col mt-3'>
             <label name='username'>Username</label>
-            <input onChange={onChange} className='flex-1 p-1' type="text" id='username' />
+            <input onChange={onChange}
+              className='flex-1 p-1 placeholder:p-2 placeholder:text-sm mt-1 rounded-md'
+              type="text" placeholder='Enter Username' id='username' />
           </div>
 
           <div className='w-full flex flex-col mt-3'>
             <label name='email'>Email</label>
-            <input onChange={onChange} className='flex-1 p-1' type="text" id='email' />
+            <input onChange={onChange}
+              className='flex-1 p-1 placeholder:p-2 placeholder:text-sm mt-1 rounded-md'
+              type="text"
+              placeholder='Enter Email'
+              id='email' />
           </div>
 
           <div className='w-full flex flex-col  mt-3'>
             <label name='password'>Password</label>
-            <input onChange={onChange} className='flex-1 p-1' type="text" id='password' />
+            <input onChange={onChange}
+              className='flex-1 p-1 placeholder:p-2 placeholder:text-sm mt-1 rounded-md'
+              placeholder='Enter password' type="text" id='password' />
           </div>
 
           <button type='submit' onClick={handleSubmit} className='bg-red-800 text-white p-2 mt-9'>SignUp</button>
@@ -69,8 +78,9 @@ function SignUp() {
           {
             Errormessage ? <span className='text-center mt-2 font-semibold text-red-700'>*{Errormessage}*</span> : null
           }
-
+          <OAuth />
         </form>
+
       </div>
     </div>
   )

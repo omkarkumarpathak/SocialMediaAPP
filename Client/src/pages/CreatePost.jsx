@@ -8,7 +8,11 @@ import { app } from '../../firebase.js'
 function CreatePost() {
 
     const [formData, setFormData] = useState({});
-    const [message, setMessage] = useState(null);
+    const [message, setMessage] = useState({
+        title:null,
+        content:null,
+        body:null
+    });
     const [uploadImageMessage, setUploadImageMessage] = useState(null);
     const [uploadImageProgress, setUploadImageProgress] = useState(null);
     const [imageFile, setImageFile] = useState(null);
@@ -62,9 +66,20 @@ function CreatePost() {
         e.preventDefault();
 
         if (!formData.title || !formData.content) {
-            return setMessage('Fill all fields');
+            setMessage((prev)=>({...prev, body:'Fill all fields'}));
+            return;
         }
 
+        if(formData.title && formData.title.trim().length<20){
+            setMessage((prev)=>({...prev, title:'Title should be minimum 20 chars'}))
+            return;
+        }
+
+        if(formData.content && formData.content.trim().length<100){
+            setMessage((prev)=>({...prev, content:'Content should be minimum 100 chars'}))
+            return;
+        }
+        
 
         try {
             const res = await fetch('/api/post/create', {
@@ -97,11 +112,13 @@ function CreatePost() {
                     <div className='w-full flex flex-col mt-3'>
                         <label name='title'>Title of Post</label>
                         <input onChange={onChange} className='flex-1 p-1' type="text" id='title' />
+                        {message && (<span>{message.title}</span>)}
                     </div>
 
                     <div className='w-full flex flex-col  mt-3'>
                         <label name='content'>Content</label>
                         <textarea onChange={onChange} className='flex-1 p-1' type="text" id='content' />
+                        {message && (<span>{message.content}</span>)}
                     </div>
 
                     <div className=' mt-3'>
@@ -115,7 +132,7 @@ function CreatePost() {
 
                     </div>
 
-                    { message && ( <span>{message}</span> )  }
+                    { message && ( <span>{message.body}</span> )  }
 
                     { uploadImageMessage && ( <span>{uploadImageMessage}</span>)}
 

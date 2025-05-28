@@ -9,11 +9,11 @@ function CommentSection({ PostId }) {
     const [comment, setComment] = useState('');
     const [commentError, setCommentError] = useState('');
     const [AllComments, setAllComments] = useState([]);
-    const [message,setMessage]=useState('');
+    const [message, setMessage] = useState('');
 
     const { currentUser } = useSelector((state) => state.user)
 
-    console.log(AllComments);
+    //    console.log(AllComments);
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
@@ -47,27 +47,26 @@ function CommentSection({ PostId }) {
         } catch (error) {
             setCommentError(error);
         }
-
     }
 
     const handleCommentLikes = async (commentId) => {
 
-        if(!currentUser){
+        if (!currentUser) {
             setMessage("Please sign-in first");
         }
-
         try {
             const res = await fetch(`/api/comment/likedComment/${commentId}`, {
                 method: 'PUT'
             });
-            
+
+            const data = await res.json();
+
             if (res.ok) {
-                const data = await res.json();
-                setAllComments((AllComments)=>AllComments.map((comment)=>
-                    comment._id===commentId ? {
+                setAllComments((AllComments) => AllComments.map((comment) =>
+                    comment._id === commentId ? {
                         ...comment,
-                        likes:data.likes,
-                        noOfLikes:data.likes.length
+                        likes: data.likes,
+                        noOfLikes: data.likes.length
                     } : comment
                 )
                 )
@@ -86,7 +85,7 @@ function CommentSection({ PostId }) {
                 setAllComments(data.comments);
             }
         }
-        
+
         fetchComments();
     }, []);
 
@@ -96,14 +95,12 @@ function CommentSection({ PostId }) {
             const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
                 method: 'DELETE'
             })
-
             const data = await res.json();
-            console.log(data.message);
+            // console.log(data.message);
             if (res.ok) {
                 setAllComments(
                     (AllComments) => AllComments.filter((comment) => comment._id !== commentId)
                 );
-                
             }
 
         } catch (error) {
@@ -119,9 +116,7 @@ function CommentSection({ PostId }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ CommentToUpdate })
             })
-
             const data = await res.json();
-
             if (res.ok) {
                 setAllComments(
                     AllComments.map((c) =>
@@ -157,7 +152,7 @@ function CommentSection({ PostId }) {
                             commentError && (<spa className='text-sm ml-3 text-red-500 font-semibold'>**{commentError}</spa>)
                         }
                         <p className=' p-3  rounded-lg w-[70%] bg-white'>
-                            <span className='cursor-pointer text-sm border border-black p-1 rounded-md'>You're signed In as: <Link className='hover:underline' to='/profile'>@{currentUser.username}</Link> </span>
+                            <span className='cursor-pointer text-sm border border-black p-1 rounded-md'>You're signed In as: <Link className='hover:underline' to='/dashboard?tab=profile'>@{currentUser?.username}</Link> </span>
                         </p>
 
                     </form>
@@ -170,7 +165,7 @@ function CommentSection({ PostId }) {
                 )
             }
 
-            {message && ( <div className='text-red-600 font-semibold mb-3'>*{message}*</div>)}
+            {message && (<div className='text-red-600 font-semibold mb-3'>*{message}*</div>)}
 
             {AllComments && AllComments.length != 0 ?
                 (

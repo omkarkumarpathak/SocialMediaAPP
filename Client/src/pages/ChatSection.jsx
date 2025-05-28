@@ -11,7 +11,7 @@ function ChatSection() {
     const [ErrorMessage, setErrorMessage] = useState(null);
     const [currentConversationId, setCurrentConversation] = useState(null);
 
-    const [socket,setSocket]=useState(null);
+    const [socket, setSocket] = useState(null);
 
     const [currentReceiver, setCurrentReceiver] = useState({});
 
@@ -19,9 +19,9 @@ function ChatSection() {
 
     const { currentUser } = useSelector((state) => state.user);
 
-    useEffect(()=>{
+    useEffect(() => {
         setSocket(io('https://mern-full-owmk.onrender.com/'));
-    },[])
+    }, [])
 
 
     useEffect(() => {
@@ -40,7 +40,7 @@ function ChatSection() {
         socket?.on('getMessage', (data) => {
 
             setMessages(prev => {
-               return [...prev, { user: { id: data.senderId, username: null }, message: data.message }]
+                return [...prev, { user: { id: data.senderId, username: null }, message: data.message }]
             });
         });
 
@@ -56,7 +56,7 @@ function ChatSection() {
                 const res = await fetch(`/api/chat/conversations/${currentUser._id}`);
                 const data = await res.json();
                 const userData = data.users.filter(user => user !== null);
-                
+
                 if (!res.ok) console.log(data.message);
                 if (res.ok) {
                     setConversationUser(userData);
@@ -133,7 +133,7 @@ function ChatSection() {
             const data = await res.json();
 
             if (res.ok) {
-                
+
                 setCurrentConversation(data.conversationId);
                 setInputData('');
             }
@@ -142,7 +142,7 @@ function ChatSection() {
             console.log(error);
         }
 
-        
+
 
     }
 
@@ -187,10 +187,10 @@ function ChatSection() {
                     }
                 </div>
 
-                <div className='bg-red-100 w-full p-3'>
-                    <div className='bg-yellow-200 p-2 w-full flex flex-col justify-center'>
-                        <div ref={chatRef} className=' bg-red-200 h-[30rem] rounded-md p-3 pb-10 overflow-auto
-                                                        '>
+                <div className=' w-full p-3'>
+                    <div className='bg-gray-400 rounded-md p-1 w-full flex flex-col justify-center'>
+                        <div ref={chatRef} className=' bg-white h-[30rem] rounded-md p-3 pb-10 overflow-auto
+                                                      '>
 
                             {
                                 messages && messages.length != 0 ? (
@@ -207,22 +207,22 @@ function ChatSection() {
                                                             <div className='bg-gray-50 w-[30%] h-[30%]  m-10 p-1 flex justify-between flex-nowrap text-md
                                                     rounded-bl-2xl rounded-tl-xl rounded-tr-xl ml-[7 0%] text-sm md:text-xs'
                                                                 key={idx}  >
-                                                                    <span className='p-2'>{message}</span>
-                                                                    <button className='mr-4'>::</button>
+                                                                <span className='p-2'>{message}</span>
+                                                                <button className='mr-4'>::</button>
                                                             </div>
                                                         )
                                                     }
                                                     else {
                                                         return (
-                                                            <div key={idx} 
+                                                            <div key={idx}
                                                                 className='bg-blue-200 w-[30%] h-[30%]  m-10 p-3 flex justify-between flex-nowrap text-md
                                                     rounded-bl-2xl rounded-tl-xl rounded-tr-xl ml-[2%] text-sm md:text-xs'>
                                                                 <span> {message}</span>
 
                                                                 <button className='mr-4'>::</button>
-                                                                
+
                                                             </div>
-                                                                
+
                                                         )
                                                     }
                                                 })
@@ -269,8 +269,8 @@ function ChatSection() {
                                             onClick={() => {
                                                 setCurrentConversation('new');
                                                 fetchMessages();
-                                                const {password, _id,...rest}=user;
-                                                setCurrentReceiver({id:_id, ...rest});
+                                                const { password, _id, ...rest } = user;
+                                                setCurrentReceiver({ id: _id, ...rest });
                                             }}
                                         >
 

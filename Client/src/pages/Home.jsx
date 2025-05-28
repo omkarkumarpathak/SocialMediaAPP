@@ -29,11 +29,11 @@ function Home() {
   if(loading) return <Spinner/>
 
   return (
-    <div >
-      <div className='p-5 bg-yellow-100'>
+    <div className='w-full flex justify-center' >
+      <div className='p-5 w-[85%]'>
         {posts && (
           
-          <div className='p-10  grid grid-cols-2 md:grid-cols-4 sm:grid-cols-3 bg-blue-100'>
+          <div className='rounded-md p-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-gray-100'>
             {posts.map((post,idx)=>(
               <PostStyle key={idx} post={post} />
             ))}

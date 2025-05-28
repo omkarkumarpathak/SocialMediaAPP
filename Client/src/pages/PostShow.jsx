@@ -4,32 +4,60 @@ import { useSelector } from 'react-redux';
 import CommentSection from '../components/CommentSection';
 import { AiOutlineLike } from "react-icons/ai";
 import { AiFillLike } from "react-icons/ai";
+import Spinner from '../components/Spinner';
 
 function PostShow() {
 
   const [Post, setPost] = useState({});
+  const [User, setUser] = useState();
   const [message, setMessage] = useState(null);
 
   const { PostId } = useParams();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    try {
-      const fetchPost = async () => {
+  const [loading, setLoading] = useState(true);
 
+
+  console.log(User);
+  console.log(Post);
+
+
+useEffect(() => {
+    const fetchPost = async () => {
+      try {
         const res = await fetch(`/api/post/getPosts?PostId=${PostId}`);
         const data = await res.json();
-        if (res.ok) {
+        if (res.ok && data.posts[0]) {
           setPost(data.posts[0]);
         }
-
+      } catch (err) {
+        console.error("Error fetching post:", err);
       }
-      fetchPost();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [PostId])
+    };
+
+    if (PostId) fetchPost();
+  }, [PostId]);
+
+  //Second useEffect: Fetch user when post is ready
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        if (Post?.userId) {
+          const res = await fetch(`/api/user/${Post.userId}`);
+          const data = await res.json();
+          if (res.ok) {
+            setUser(data);
+            setLoading(false);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching user:", err);
+      }
+    };
+
+    fetchUser();
+  }, [Post]); 
 
 
   const deletePost = async () => {
@@ -54,10 +82,10 @@ function PostShow() {
 
   const handleLike = async () => {
 
-    if(!currentUser){
+    if (!currentUser) {
       return setMessage("Please Sign in first to Like");
     }
-    
+
     try {
       const res = await fetch(`/api/post/likedPost/${Post._id}`, {
         method: 'PUT'
@@ -66,8 +94,8 @@ function PostShow() {
       const data = await res.json();
 
       if (res.ok) {
-        setPost({ ...Post, likes:data.likes,noOfLikes: data.noOfLikes});
-        
+        setPost({ ...Post, likes: data.likes, noOfLikes: data.noOfLikes });
+
       }
 
     } catch (error) {
@@ -76,22 +104,24 @@ function PostShow() {
 
   }
 
+  if (loading) return <Spinner />
 
   return (
     <div>
-      <div className='p-10 w-full bg-blue-200 flex flex-col justify-center items-center '>
-        <div className='mt-5 mb-5 w-[70%] bg-white flex justify-center'>
+
+      <div className='p-10 w-full flex flex-col justify-center items-center '>
+        <div className='mt-5 mb-5 w-[70%] bg-gray-100 flex justify-center'>
           {Post && (
             <div className='mt-10 p-3 w-[90%] flex flex-col items-center'>
               <div><span className='text-2xl font-semibold'>Title: {Post.title}</span></div>
-              <div className='mt-5 p-5 w-[200px] h-[200px]'>
-                <img src={Post.image} alt="Not-found" />
+              <div className='mt-5 p-5 '>
+                <img className='h-90 w-90' src={Post.image} alt="Not-found" />
               </div>
               <div className='mt-2 p-5'>
                 <p>{Post.content}</p>
               </div>
               <div>
-                <p className='mt-6'>Created By: {Post.userId}</p>
+                <p className='mt-6 underline'>Created By: {User?.username}</p>
               </div>
 
               <div className=' mt-7 mb-5 w-[80%] flex justify-between'>
@@ -119,13 +149,12 @@ function PostShow() {
 
           )}
         </div>
-        <div onClick={handleLike} className='w-[50%] bg-red-50 flex items-center gap-1 text-xl' >
+        <div onClick={handleLike} className='w-[50%] rounded-2xl p-3 bg-red-50 flex items-center gap-1 text-xl' >
           <span>Likes</span>
-          {Post?.likes?.includes(currentUser?._id) ? 
-            <AiFillLike />:
-            <AiOutlineLike  />
-          }
-             {Post.noOfLikes}</div>
+          {Post?.likes?.includes(currentUser?._id) ? <AiFillLike /> : <AiOutlineLike />}
+          {Post.noOfLikes}
+        </div>
+
       </div>
       <CommentSection PostId={PostId} />
     </div>
