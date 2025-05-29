@@ -69,7 +69,7 @@ function SearchPage() {
 
     //  console.log(posts);
     return (
-        <div className='h-screen flex w-full'>
+        <div className=' flex w-full'>
             <div className='p-5 flex flex-col space-y-5 w-[30%] bg-gray-300 h-screen'>
                 Sidebar
                 <input type="text" value={filter.searchTerm} id='searchTerm' onChange={handleFilterChange} />

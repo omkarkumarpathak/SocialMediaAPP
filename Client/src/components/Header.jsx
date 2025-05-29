@@ -71,7 +71,7 @@ function Header() {
 
                 {
                     hamburger == true ?
-                        <div className='flex flex-col sm:hidden space-y-2 absolute bg-red-400 top-0 right-0 h-64 w-40 p-5'>
+                        <div className='z-10 flex flex-col sm:hidden space-y-2 absolute bg-red-400 top-0 right-0 h-64 w-40 p-5'>
                             <span className='cursor-pointer' onClick={() => setHamburger(false)}>X</span>
                             <Link onClick={() => setHamburger(false)} to='/' className={path == '/' ? 'underline' : ''}><span>Home</span></Link>
                             <Link onClick={() => setHamburger(false)} to='/courses' className={path == '/courses' ? 'underline' : ''}><span>Courses</span></Link>
