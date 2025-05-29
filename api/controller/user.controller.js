@@ -1,6 +1,9 @@
 import User from "../Model/user.model.js";
 import bcryptjs from 'bcryptjs';
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const updateUser = async (req, res) => {
     try {
@@ -126,8 +129,6 @@ export const sendOTPtoMail = async (req, res) => {
     if(!validUser){
         return res.status(404).json({error:"Email is not registered"});
     }
-
-  
 
     const mailOptions = {
         from: 'omkarpathak.delhi@gmail.com',
