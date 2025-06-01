@@ -7,7 +7,7 @@ import ChangePassword from './ChangePassword';
 function VerifyOTP() {
     const { OTP } = useContext(RecoveryContext);
 
-    console.log(OTP);
+  //  console.log(OTP);
 
     const [otp, setOTP] = useState(new Array(4).fill(""));
     const [combinedOTP, setCombinedOTP] = useState('');

@@ -13,30 +13,48 @@ function Home() {
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [allLoaded, setAllLoaded] = useState(false);
+  const [skip, setSkip] = useState(0);
+
+  const limit = 4;
+
+  console.log(allLoaded);
+
+  const getPosts = async (skipCount) => {
+    try {
+      const res = await fetch(`/api/post/getPosts?skip=${skipCount}&limit=${limit}`);
+      const data = await res.json();
+
+      //console.log();
+
+      if (data.posts.length < limit) {
+        setAllLoaded(true);
+      }
+
+      if (res.ok) {
+        setPosts(prevPosts => [...prevPosts, ...data.posts]);
+        setSkip(prev => prev + data.posts.length);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+    finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-
-    const getPosts = async (req, res) => {
-      try {
-        const res = await fetch('/api/post/getPosts');
-        const data = await res.json();
-        if (res.ok) {
-          setPosts(data.posts);
-          
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-      finally{
-        setLoading(false);
-      }
-    }
-
-    getPosts();
-
+    getPosts(0);
   }, [])
 
+  const handleLoadMore = () => {
+    if (!allLoaded) {
+      getPosts(skip);
+    }
+  };
+
   if (loading) return <Spinner />
+
 
   return (
     <section className='w-full flex flex-col items-center justify-center' >
@@ -68,6 +86,11 @@ function Home() {
           </div>
         )}
       </div>
+      {
+        !allLoaded && (
+          <button disabled={allLoaded} onClick={handleLoadMore} className='m-5 bg-blue-600 text-white rounded-lg p-2 font-semibold'>Load More...</button>
+        )
+      }
     </section>
   )
 }
