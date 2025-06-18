@@ -21,15 +21,22 @@ function MyPosts() {
 
     }, [])
     return (
-        <div className='w-full p-8 '>
+        <div className='w-full h-screen p-8 '>
             <h1 className=' text-xl font-semibold text-center'>My Posts</h1>
-            <div className='bg-red-50 rounded-lg flex flex-col space-x-4 justify-center '>
+            <div className='bg-red-50 mt-10 rounded-lg flex flex-col space-x-4 justify-center '>
 
                 <div className='p-10 flex space-x-8 ' >
                     {
-                        Posts && Posts.map((post, idx) => (
-                            <PostStyle key={idx} post={post} />
-                        ))
+                        Posts && Posts.length>0 ?
+                        (
+                            Posts.map((post, idx) => (
+                                <PostStyle key={idx} post={post} />
+                            ))
+                        )
+                        :
+                        (
+                            <span className='w-full text-center'>No Posts</span>
+                        )
                     }
                 </div>
             </div>
