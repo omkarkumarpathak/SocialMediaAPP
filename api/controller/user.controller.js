@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const updateUser = async (req, res) => {
-    try {
 
+    try {
         const userId = req.params.userId;
 
         if (req.body.password) {
@@ -26,7 +26,7 @@ export const updateUser = async (req, res) => {
             { new: true },
         );
 
-        const { password, ...rest } = updatedUser._doc;  //for cookie except password
+        const { password, ...rest } = updatedUser._doc;   
         res.status(200).json(rest);
 
     } catch (error) {
@@ -37,7 +37,7 @@ export const updateUser = async (req, res) => {
 export const updatePassword = async (req, res) => {
 
     const email = req.params.email;
-    let { password } = req.body;
+    const { password } = req.body;
 
     if (!password || password.length < 5)
         return res.status(200).json({ message: "Password to daal le" });
@@ -82,7 +82,6 @@ export const signOut = async (req, res) => {
 export const getUser = async (req, res) => {
 
     try {
-
         const user = await User.findById(req.params.userId);
         const { password, ...rest } = user._doc;
         res.status(200).json(rest);

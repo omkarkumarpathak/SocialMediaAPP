@@ -23,7 +23,7 @@ function PostShow() {
   console.log(Post);
 
 
-useEffect(() => {
+  useEffect(() => {
     const fetchPost = async () => {
       try {
         const res = await fetch(`/api/post/getPosts?PostId=${PostId}`);
@@ -57,7 +57,7 @@ useEffect(() => {
     };
 
     fetchUser();
-  }, [Post]); 
+  }, [Post]);
 
 
   const deletePost = async () => {
@@ -113,7 +113,10 @@ useEffect(() => {
         <div className='mt-5 mb-5 w-[70%] bg-gray-100 flex justify-center'>
           {Post && (
             <div className='mt-10 p-3 w-[90%] flex flex-col items-center'>
-              <div><span className='text-2xl font-semibold'>Title: {Post.title}</span></div>
+              <div className='flex flex-col justify-center items-center'>
+                <span className='text-2xl font-semibold'>Title: {Post.title}</span>
+                <span>Views:{Post.views}</span>
+              </div>
               <div className='mt-5 p-5 '>
                 <img className='h-90 w-90' src={Post.image} alt="Not-found" />
               </div>
@@ -127,14 +130,14 @@ useEffect(() => {
               <div className=' mt-7 mb-5 w-[80%] flex justify-between'>
 
                 {
-                  Post.userId == currentUser?._id && <button onClick={deletePost}
+                  (Post.userId == currentUser?._id || currentUser?.admin == true) && <button onClick={deletePost}
                     className='rounded bg-red-700 text-white text-xs font-semibold px-2 py-1'>
                     Delete</button>
                 }
 
 
                 {
-                  Post.userId == currentUser?._id && (<button className='rounded bg-red-700 text-white text-xs font-semibold px-2 py-1'>
+                  (Post.userId == currentUser?._id || currentUser?.admin == true) && (<button className='rounded bg-red-700 text-white text-xs font-semibold px-2 py-1'>
                     <Link to={`/post/update/${PostId}`}>Update Post</Link>
                   </button>)
                 }
@@ -149,9 +152,9 @@ useEffect(() => {
 
           )}
         </div>
-        <div onClick={handleLike} className='w-[50%] rounded-2xl p-3 bg-red-50 flex items-center gap-1 text-xl' >
+        <div onClick={handleLike} className='w-[50%]  rounded-2xl p-3 bg-red-50 flex items-center gap-1 text-xl' >
           <span>Likes</span>
-          {Post?.likes?.includes(currentUser?._id) ? <AiFillLike /> : <AiOutlineLike />}
+          <div className='cursor-pointer'>{Post?.likes?.includes(currentUser?._id) ? <AiFillLike /> : <AiOutlineLike />}</div>
           {Post.noOfLikes}
         </div>
 

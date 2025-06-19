@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegCommentDots } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
+
 
 function PostStyle({ post }) {
 
@@ -13,9 +15,11 @@ function PostStyle({ post }) {
                 <div className='px-5 py-2 w-full bg-white flex flex-col '>
                     <span>{post.title}</span>
 
-                    <div className=' mt-2 flex items-center gap-x-2 text-sm'>
+                    <div className=' mt-6 w-[90%] flex items-center justify-between text-sm'>
                         <span className='flex items-center gap-x-1'><AiOutlineLike /> {post.noOfLikes}</span>
                         <span className='flex items-center gap-x-1'> <FaRegCommentDots /> 0</span>
+                        <span className='flex items-center gap-x-1'> <FaEye />{post.views} </span>
+
                     </div>
                     <button className='bg-blue-500 mb-5 w-full hover:bg-blue-800 transition duration-200 mt-5 rounded-lg text-yellow-50'><Link to={`/post/${post._id}`} >view</Link></button>
 

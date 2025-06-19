@@ -30,6 +30,14 @@ export const getPosts = async (req, res) => {
 
     const {skip,limit}=req.query;
     try {
+
+       if(req.query.PostId){
+            await Post.findByIdAndUpdate(req.query.PostId,
+                {$inc:{views:1}},
+                {new:true}
+            );
+       }
+
         const posts = await Post.find({
             ...(req.query.PostId && { _id: req.query.PostId }),
             ...(req.query.userId && { userId: req.query.userId }),
