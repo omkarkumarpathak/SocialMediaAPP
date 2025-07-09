@@ -1,7 +1,6 @@
 import User from "../Model/user.model.js"
 import bcryptjs from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { createToken } from "../utils/CreateToken.js";
+import jwt from 'jsonwebtoken'; 
 
 export const test=(req,res)=>{
     res.json({message: "API Test is working"})
@@ -93,15 +92,13 @@ export const google = async (req, res) => {
 
         } else {
             const generatedPassword =
-                Math.random().toString(36).slice(-8) +
-                Math.random().toString(36).slice(-8);
+                Math.random().toString(36).slice(-8)
 
             const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
 
             const newUser = new User({
                 username:
-                    name.toLowerCase().split(' ').join('') +
-                    Math.random().toString(9).slice(-4),
+                    name.toLowerCase().split(' ').join('') ,
                 email,
                 password: hashedPassword,
                 profilePicture: googlePhotoUrl,
@@ -112,7 +109,7 @@ export const google = async (req, res) => {
                 { id: newUser._id},
                 process.env.JWT_SECRET
             );
-            
+
             const { password, ...rest } = newUser._doc;
             res
                 .status(200)
