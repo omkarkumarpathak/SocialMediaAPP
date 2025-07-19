@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
+import Spinner from '../components/Spinner';
+
 
 function AdminDash() {
 
     const [AllPosts, setPosts] = useState({});
     const {currentUser}=useSelector((state)=>(state.user));
+    const [loading,setLoading]=useState(true);
+
 
     useEffect(() => {
 
@@ -14,6 +18,7 @@ function AdminDash() {
                 const res = await fetch('/api/post/getPosts');
                 const data = await res.json();
                 if (res.ok) {
+                    setLoading(false);
                     setPosts(data.posts);
                 }
 
@@ -36,7 +41,7 @@ function AdminDash() {
 
             const data= await res.json();
             
-            if(res.ok){
+            if(res.ok){ 
                 setPosts( (prevPosts)=>prevPosts.filter(Post=>Post._id!=post._id));
             }
 
@@ -48,6 +53,7 @@ function AdminDash() {
         }
     }
 
+    if (loading) return <Spinner />
 
     return (
         <div className="h-screen overflow-x-auto p-4">

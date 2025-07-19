@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { useRef } from 'react';
+import { useEffect, useState,useRef } from 'react'
 import { useSelector } from 'react-redux';
 
 import { io } from 'socket.io-client';
 
 function ChatSection() {
+
     const [conversationUser, setConversationUser] = useState([]);
     const [messages, setMessages] = useState([]);
     const [inputData, setInputData] = useState('');
@@ -20,9 +20,11 @@ function ChatSection() {
     const { currentUser } = useSelector((state) => state.user);
 
     useEffect(() => {
-        setSocket(io('http://localhost:5173'));
+        setSocket(io('http://localhost:4000'));
     }, [])
 
+
+   // console.log(messages);
 
     useEffect(() => {
 
@@ -39,7 +41,10 @@ function ChatSection() {
 
         socket?.on('getMessage', (data) => {
 
+            console.log(data);
+
             setMessages(prev => {
+                
                 return [...prev, { user: { id: data.senderId, username: null }, message: data.message }]
             });
         });
@@ -47,7 +52,8 @@ function ChatSection() {
         return () => {
             socket?.disconnect();
         };
-    }, [socket]);
+
+    }, [currentUser, socket]);
 
     useEffect(() => {
 
@@ -55,19 +61,21 @@ function ChatSection() {
             try {
                 const res = await fetch(`/api/chat/conversations/${currentUser._id}`);
                 const data = await res.json();
-                const userData = data.users.filter(user => user !== null);
+                const userData = data;
+
+                console.log(userData);
 
                 if (!res.ok) console.log(data.message);
                 if (res.ok) {
                     setConversationUser(userData);
                 }
             } catch (error) {
-
+                console.log(error);
             }
         }
         fetchConversationUser();
 
-    }, [])
+    }, [currentUser._id])
 
 
     useEffect(() => {
@@ -76,9 +84,20 @@ function ChatSection() {
             try {
                 const res = await fetch('/api/user/allUsers');
 
-                const data = await res.json();
+                const data = await res.json(); 
+
                 if (res.ok) {
-                    setAllUsers(data);
+
+                    console.log(conversationUser);
+
+                    const filteredUsers = data.filter(allUser =>
+                        !conversationUser.some(convo =>
+                            convo.user && convo.user.id === allUser._id
+                        )
+                        );
+
+                    setAllUsers(filteredUsers);
+
                 }
             } catch (error) {
                 console.log(error);
@@ -93,6 +112,7 @@ function ChatSection() {
         try {
             const res = await fetch(`/api/chat/messages/${conversationId}`);
             const data = await res.json();
+            
             if (res.ok) {
                 setMessages(data)
             }
@@ -141,12 +161,9 @@ function ChatSection() {
         } catch (error) {
             console.log(error);
         }
-
-
-
     }
 
-    //to auto scroll the div
+    //To auto scroll the div
     const chatRef = useRef(null);
     useEffect(() => {
         if (chatRef.current) {
@@ -158,7 +175,9 @@ function ChatSection() {
 
     return (
         <div className='flex justify-center'>
+           
             <div className='flex w-full '>
+                
                 <div className='bg-gray-300 w-[30%] '>
                     <h3 className='mt-3 ml-5 text-xs font-bold p-2 '>Conversation</h3>
 
@@ -187,6 +206,8 @@ function ChatSection() {
                     }
                 </div>
 
+                {/* Show all messages */}
+
                 <div className=' w-full p-3'>
                     <div className='bg-gray-400 rounded-md p-1 w-full flex flex-col justify-center'>
                         <div ref={chatRef} className=' bg-white h-[30rem] rounded-md p-3 pb-10 overflow-auto
@@ -196,7 +217,7 @@ function ChatSection() {
                                 messages && messages.length != 0 ? (
 
                                     <div>
-                                        <p className='bg-gray-50 p-2 rounded-lg hover:bg-white cursor-pointer'>Name: @{currentReceiver.username}</p>
+                                        <p className='bg-gray-100 p-2 rounded-lg hover:bg-white cursor-pointer'>Name: @{currentReceiver.username}</p>
 
                                         <div className='flex flex-col space-y-4 py-3 px-1.5'>
                                             {
@@ -204,11 +225,10 @@ function ChatSection() {
 
                                                     if (id == currentUser._id) {
                                                         return (
-                                                            <div className='bg-gray-50 w-[30%] h-[30%]  m-10 p-1 flex justify-between flex-nowrap text-md
-                                                    rounded-bl-2xl rounded-tl-xl rounded-tr-xl ml-[7 0%] text-sm md:text-xs'
+                                                            <div className=' bg-gray-50 w-[30%] h-[30%]  m-10 p-1 flex justify-between flex-nowrap text-md
+                                                    rounded-bl-2xl rounded-tl-xl rounded-tr-xl ml-[70%] text-sm md:text-xs'
                                                                 key={idx}  >
-                                                                <span className='p-2'>{message}</span>
-                                                                <button className='mr-4'>::</button>
+                                                                <span className='p-2'>{message}::</span> 
                                                             </div>
                                                         )
                                                     }
@@ -233,7 +253,7 @@ function ChatSection() {
                                 ) :
                                     <div>
                                         <div className='w-full flex justify-center my-10'>
-                                            <span className=''>No messages</span>
+                                            <span className='text-sm font-semibold'>Start New Conversation</span>
                                         </div>
                                     </div>
 
@@ -255,6 +275,8 @@ function ChatSection() {
                         }
                     </div>
                 </div>
+
+                {/* Start New Conversation: Right Side Blocks */}
 
 
                 <div className='bg-gray-300 hidden sm:flex w-[30%] h-screen'>

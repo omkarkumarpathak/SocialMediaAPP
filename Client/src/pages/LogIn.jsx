@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInFailure, signInSuccess, signInStart } from '../redux/user/userSlice';
@@ -11,6 +11,19 @@ function LogIn() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [csrfToken, setCsrfToken]=useState('');
+
+  useEffect(()=>{
+
+    const fetchCsrfToken=async()=>{
+      const res=await fetch('/api/csrf-token');
+      const data=await res.json();
+      setCsrfToken(data.csrfToken);
+    }
+    fetchCsrfToken();
+  },[])
+
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -28,7 +41,11 @@ function LogIn() {
       dispatch(signInStart());
       const res = await fetch('/api/auth/signIn', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRF-Token':csrfToken, 
+        },
+        credentials:'include',                      //include cookies
         body: JSON.stringify(formData),
       })
 

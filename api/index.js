@@ -5,17 +5,24 @@ import userRoutes from './Router/user.route.js'
 import postRoute from './Router/post.route.js'
 import commentRoute from './Router/comment.route.js'
 import chatRoute from './Router/chat.route.js';
+import db from './utils/db.js'
 
-import mongoose from 'mongoose';
+import cors from 'cors'
 import dotenv from 'dotenv'
-
 import cookieParser from 'cookie-parser';
-
 import path from 'path'
 
-const __dirname = path.resolve();
+import csrfProtection from './utils/verifyCsrfToken.js'
 
+
+
+const __dirname = path.resolve();
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 dotenv.config();
 
 //creating chat server
@@ -24,25 +31,29 @@ import { Server } from 'socket.io';
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "https://mern-full-owmk.onrender.com", // Allow requests from this origin
+        origin: "http://localhost:5173", // Allow requests from this origin
         methods: ["GET", "POST"], // Allow GET and POST requests
     }
 });
 
 let users = [];
+
 io.on('connection', (socket) => {
+
     console.log('a user connected', socket.id);
 
     // Handle events here
-    socket.on('addUser', currentUserID => {
+    socket.on('addUser', (currentUserID) => {
+        
         console.log(currentUserID);
         const isUserExist = users.find(user => user.userID === currentUserID);
+        
         if (!isUserExist) {
             const user = { userID: currentUserID, socketID: socket.id };
             users.push(user);
             io.emit('getUsers', users);
         }
-
+        
     });
 
     socket.on('sendMessage', ({ senderId, conversationId, message, receiverId }) => {
@@ -73,32 +84,15 @@ io.on('connection', (socket) => {
         io.emit('getUsers', users);
     });
 });
-
-
-
-mongoose.connect("mongodb+srv://omkarpathakdelhi:LA7uXMHwxSUIOC6l@cluster0.ox1je.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    tlsInsecure: true
-});
-
-const db = mongoose.connection;
-//Even listeners
-db.on('connected', () => {
-    console.log('Connected to MongoDB server');
-})
-
-db.on('error', (err) => {
-    console.log('MongoDB connection error', err);
-})
-db.on('disconnected', () => {
-    console.log('MongoDB disconnected');
-}
-)
-
-
+  
 app.use(express.json());
 app.use(cookieParser());
+
+
+
+app.get('/api/csrf-token', csrfProtection, (req,res)=>{
+    res.json({csrfToken:req.csrfToken()});
+})
 
 
 server.listen(4000 || process.env.PORT, () => {
@@ -109,7 +103,7 @@ server.listen(4000 || process.env.PORT, () => {
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/post', postRoute);
-app.use('/api/comment', commentRoute);
+app.use('/api/comment', commentRoute); 
 
 //chat box
 app.use('/api/chat', chatRoute);
