@@ -13,8 +13,7 @@ import cookieParser from 'cookie-parser';
 import path from 'path'
 
 import csrfProtection from './utils/verifyCsrfToken.js'
-
-
+import limiter from './utils/rater-limiter.js'
 
 const __dirname = path.resolve();
 const app = express();
@@ -88,6 +87,7 @@ io.on('connection', (socket) => {
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(limiter);
 
 
 app.get('/api/csrf-token', csrfProtection, (req,res)=>{
