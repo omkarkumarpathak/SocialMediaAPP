@@ -14,6 +14,7 @@ import path from 'path'
 
 import csrfProtection from './utils/verifyCsrfToken.js'
 import limiter from './utils/rater-limiter.js'
+import helmet from 'helmet'
 
 const __dirname = path.resolve();
 const app = express();
@@ -88,7 +89,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(limiter);
-
+app.use(helmet);
 
 app.get('/api/csrf-token', csrfProtection, (req,res)=>{
     res.json({csrfToken:req.csrfToken()});
