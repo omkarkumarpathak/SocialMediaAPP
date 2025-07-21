@@ -89,7 +89,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(limiter);
-app.use(helmet);
+app.use(helmet());
 
 app.get('/api/csrf-token', csrfProtection, (req,res)=>{
     res.json({csrfToken:req.csrfToken()});

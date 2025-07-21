@@ -2,6 +2,7 @@ import User from "../Model/user.model.js";
 import bcryptjs from 'bcryptjs';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import RedisClient from "../utils/redisClient.js";
 
 dotenv.config();
 
@@ -92,12 +93,22 @@ export const getUser = async (req, res) => {
 }
 
 export const allUsers = async (req, res) => {
+
+    //finding in Redis
+    const cached=await RedisClient.get('users');
+    if(cached) return res.json(JSON.parse(cached));
+
+
     try {
         const users = await User.find({});
+        //saving in redis
+        await RedisClient.set('users', JSON.stringify(users));
         res.status(200).json(users);
+        
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
+
 }
 
 
