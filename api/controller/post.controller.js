@@ -1,6 +1,6 @@
 import Post from "../Model/post.model.js";
 
-import RedisClient from "../utils/redisClient.js";
+//import RedisClient from "../utils/redisClient.js";
 
 export const CreatePost = async (req, res) => {
 
@@ -31,8 +31,8 @@ export const CreatePost = async (req, res) => {
 export const getPosts = async (req, res) => {
 
     //First, finding in Redis
-    const cached=await RedisClient.get('posts');
-    if(cached) return res.json({ posts: JSON.parse(cached) });
+    // const cached=await RedisClient.get('posts');
+    // if(cached) return res.json({ posts: JSON.parse(cached) });
  
 
     const {skip,limit}=req.query;
@@ -59,7 +59,7 @@ export const getPosts = async (req, res) => {
             .skip(Number(skip))      // convert to number
             .limit(Number(limit));   // default limit = 6
 
-        await RedisClient.set('posts',JSON.stringify(posts));
+       // await RedisClient.set('posts',JSON.stringify(posts));
 
         res.status(200).json({ posts });
 
