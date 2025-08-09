@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import VerifyOTP from './verifyOTP';
+import VerifyOTP from './VerifyOTP';
 import { RecoveryContext } from '../../pages/PasswordChange/PasswordReset';
 
 
