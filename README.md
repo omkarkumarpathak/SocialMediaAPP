@@ -1,13 +1,13 @@
-Social Media Web App (Full-Stack)
+**Social Media Web App (Full-Stack)**
 
-Contact: 8595884083
+**Contact: 8595884083**
 
-A feature-rich social media platform built with modern full-stack technologies, supporting both User and Admin roles.
+A feature-rich social media platform built with modern **full-stack technologies**, supporting both **User** and **Admin** roles.
 
 🔹 **User & Admin Features**
 
-      **User Authentication**: Sign In, Sign Out, Forgot Password & OTP verification (via Nodemailer).
-      **Account Management:** Edit and Delete account functionality.
+      User Authentication: Sign In, Sign Out, Forgot Password & OTP verification (via Nodemailer).
+      Account Management : Edit and Delete account functionality.
       Post Management (CRUD): Create, Read, Update, and Delete posts.
       Bookmarks: Save and unsave posts.
       Social Features: Follow/unfollow other users.
