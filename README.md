@@ -4,23 +4,23 @@ Contact: 8595884083
 
 A feature-rich social media platform built with modern full-stack technologies, supporting both User and Admin roles.
 
-🔹 User & Admin Features
+🔹 **User & Admin Features**
 
-      User Authentication: Sign In, Sign Out, Forgot Password & OTP verification (via Nodemailer).
-      Account Management: Edit and Delete account functionality.
+      **User Authentication**: Sign In, Sign Out, Forgot Password & OTP verification (via Nodemailer).
+      **Account Management:** Edit and Delete account functionality.
       Post Management (CRUD): Create, Read, Update, and Delete posts.
       Bookmarks: Save and unsave posts.
       Social Features: Follow/unfollow other users.
       Admin Panel: Dedicated dashboard for monitoring users and posts      
       Dashboard Sections: Profile, My Posts, Saved Posts, Admin Dashboard.
       
-🔹 Chat Functionality
+🔹 **Chat Functionality**
       
       Real-time Chat: Implemented using WebSockets for peer-to-peer (P2P) messaging.
       Conversations: Start and manage chats with any user.      
       Live Messaging: Instant delivery with seamless chat experience.
 
-🔹 Search Functionality
+🔹 **Search Functionality**
 
     Custom Search API: Efficient backend search implementation.
     Advanced Search: Optimized using JavaScript concepts for fast and accurate results.
