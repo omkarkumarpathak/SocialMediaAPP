@@ -1,3 +1,6 @@
+ <img width="1881" height="849" alt="Screenshot 2025-08-24 202240" src="https://github.com/user-attachments/assets/dd7b823e-b1d4-42b6-ad8f-c86eb40705da" />
+    <img width="1886" height="951" alt="Screenshot 2025-08-24 203803" src="https://github.com/user-attachments/assets/7d10e03c-169f-4b87-b83d-f20baf32464d" />
+
 **Social Media Web App (Full-Stack)**
 
 **Contact: 8595884083**
@@ -27,8 +30,7 @@ A feature-rich social media platform built with modern **full-stack technologies
 
 
    
- <img width="1881" height="849" alt="Screenshot 2025-08-24 202240" src="https://github.com/user-attachments/assets/dd7b823e-b1d4-42b6-ad8f-c86eb40705da" />
-    <img width="1886" height="951" alt="Screenshot 2025-08-24 203803" src="https://github.com/user-attachments/assets/7d10e03c-169f-4b87-b83d-f20baf32464d" />
+
     
 <img width="1841" height="836" alt="Screenshot 2025-08-24 202810" src="https://github.com/user-attachments/assets/9a9b8a5d-4268-42de-8a80-4cb87edc194f" />
 
